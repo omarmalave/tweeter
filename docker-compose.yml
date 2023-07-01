@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: tweeter
+      POSTGRES_PASSWORD: tweeter
+      POSTGRES_DB: tweeter
+    volumes:
+      - ./data:/var/lib/postgresql/data
