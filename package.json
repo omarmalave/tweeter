@@ -4,6 +4,9 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} packages/server/prisma/seed.ts"
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "~16.1.0",
     "@angular-devkit/core": "~16.1.0",
