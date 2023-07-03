@@ -1,35 +1,29 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { PrismaService } from '../core/services/prisma.service';
-import { createMock } from '@golevelup/ts-jest';
-import { User } from "@prisma/client";
-import { faker } from '@faker-js/faker';
-
-const createMockUser = (): User => ({
-  id: faker.number.int(),
-  username: faker.internet.userName(),
-  name: faker.person.fullName(),
-  email: faker.internet.email(),
-  password: faker.internet.password(),
-  profileId: faker.number.int(),
-  lastLogin: faker.date.recent(),
-  createdAt: faker.date.recent(),
-  updatedAt: faker.date.recent(),
-})
+import { createMockUser } from '../core/test/test.util';
 
 describe('UsersService', () => {
   let service: UsersService;
-  let prismaService: jest.Mocked<PrismaService>;
+  let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersService, PrismaService],
+      providers: [UsersService,
+        {
+          provide: PrismaService, useValue: {
+            user: { findUnique: jest.fn() }
+          }
+        }],
     })
-      .useMocker(createMock)
       .compile();
 
     service = module.get<UsersService>(UsersService);
-    prismaService = module.get<jest.Mocked<PrismaService>>(PrismaService);
+    prismaService = module.get<PrismaService>(PrismaService);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it('should be defined', () => {
@@ -39,15 +33,42 @@ describe('UsersService', () => {
   it('should return a user by id', async () => {
     // Arrange
     const userId = 1;
-    const expectedUser = createMockUser();
+    const expectedUser = createMockUser(userId);
 
-    const spy = jest.spyOn(prismaService.user, 'findUniqueOrThrow').mockResolvedValue(expectedUser);
+    const spy = jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue(expectedUser);
 
     // Act
     const user = await service.findUserById(userId);
 
     // Assert
     expect(spy).toHaveBeenCalledWith({ where: { id: userId } });
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(user).toEqual(expectedUser);
   });
+
+  it('should throw an error if Prisma query fails', async () => {
+    // Arrange
+    const userId = 1;
+    const databaseError = new Error('Database error');
+    jest.spyOn(prismaService.user, 'findUnique').mockRejectedValueOnce(databaseError);
+
+    // Act and Assert
+    await expect(service.findUserById(userId)).rejects.toThrow(databaseError);
+  });
+
+
+  it('should return null if user is not found', async () => {
+    // Arrange
+    const userId = 1;
+    jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue(null);
+
+    // Act
+    const user = await service.findUserById(userId);
+
+    // Assert
+    expect(user).toBeNull();
+  });
+
+
+
 });

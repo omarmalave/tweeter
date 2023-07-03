@@ -7,7 +7,7 @@ export class UsersService {
   constructor(private readonly prismaService: PrismaService) { }
 
   async findUserById(userId: number) {
-    return this.prismaService.user.findUniqueOrThrow({
+    return this.prismaService.user.findUnique({
       where: { id: userId },
     });
   }

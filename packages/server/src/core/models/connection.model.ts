@@ -7,7 +7,7 @@ interface IEdge<T> {
   node: T;
 }
 
-interface IConnection<T> {
+export interface IConnection<T> {
   edges: IEdge<T>[];
   pageInfo: IPageInfo;
 }
