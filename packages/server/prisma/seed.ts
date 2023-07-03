@@ -1,6 +1,9 @@
-import { PrismaClient, Privacy } from '@prisma/client'
-const prisma = new PrismaClient()
-const defaultAvatarUrl = 'https://merriam-webster.com/assets/mw/images/article/art-wap-article-main/egg-3442-e1f6463624338504cd021bf23aef8441@2x.jpg';
+import { PrismaClient, Privacy } from '@prisma/client';
+
+const prisma = new PrismaClient();
+const defaultAvatarUrl =
+  'https://merriam-webster.com/assets/mw/images/article/art-wap-article-main/egg-3442-e1f6463624338504cd021bf23aef8441@2x.jpg';
+
 async function main() {
   const alice = await prisma.user.upsert({
     where: { email: 'alice@prisma.io' },
@@ -8,8 +11,7 @@ async function main() {
     create: {
       email: 'omar@test.com',
       username: 'omar',
-      firstName: 'Omar',
-      lastName: 'Malavé',
+      name: 'Omar Malavé',
       password: 'password123',
       profile: {
         create: {
@@ -25,7 +27,7 @@ async function main() {
         },
       },
     },
-  })
+  });
 
   const bob = await prisma.user.upsert({
     where: { email: 'miles@test.com' },
@@ -33,8 +35,7 @@ async function main() {
     create: {
       email: 'miles@test.com',
       username: 'miles',
-      firstName: 'Miles',
-      lastName: 'Morales',
+      name: 'Miles Morales',
       password: 'password123',
       profile: {
         create: {
@@ -56,15 +57,15 @@ async function main() {
         ],
       },
     },
-  })
+  });
 }
 
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
