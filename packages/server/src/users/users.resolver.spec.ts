@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
 import { createMockUser } from '../core/test/test.util';
+import { NotFoundException } from '@nestjs/common';
 
 describe('UsersResolver', () => {
   let resolver: UsersResolver;
@@ -32,7 +33,7 @@ describe('UsersResolver', () => {
     const spy = jest.spyOn(usersService, 'findUserById').mockResolvedValue(expectedUser);
 
     // Act
-    const user = await usersService.findUserById(userId);
+    const user = await resolver.findUserById(userId);
 
     // Assert
     expect(spy).toHaveBeenCalledWith(userId);
@@ -47,19 +48,16 @@ describe('UsersResolver', () => {
     jest.spyOn(usersService, 'findUserById').mockRejectedValueOnce(serviceError);
 
     // Act and Assert
-    await expect(usersService.findUserById(userId)).rejects.toThrow(serviceError);
+    await expect(resolver.findUserById(userId)).rejects.toThrow(serviceError);
   });
 
 
-  it('should return null if user is not found', async () => {
+  it('should throw an error if user is not found', async () => {
     // Arrange
     const userId = 1;
     jest.spyOn(usersService, 'findUserById').mockResolvedValue(null);
 
-    // Act
-    const user = await usersService.findUserById(userId);
-
-    // Assert
-    expect(user).toBeNull();
+    // Act and Assert
+    await expect(resolver.findUserById(userId)).rejects.toThrow(new NotFoundException(`User with id ${userId} not found`));
   });
 });

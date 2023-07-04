@@ -1,11 +1,16 @@
 {
   "name": "server-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "implicitDependencies": ["server"],
+  "implicitDependencies": [
+    "server"
+  ],
+  "sourceRoot": "packages/server-e2e/src",
   "targets": {
     "e2e": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{e2eProjectRoot}"
+      ],
       "options": {
         "jestConfig": "packages/server-e2e/jest.config.ts",
         "passWithNoTests": true
@@ -13,9 +18,13 @@
     },
     "lint": {
       "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["packages/server-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": [
+          "packages/server-e2e/**/*.{js,ts}"
+        ]
       }
     }
   }

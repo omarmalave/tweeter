@@ -68,6 +68,12 @@
           "codeCoverage": true
         }
       }
+    },
+    "docker-build": {
+      "dependsOn": [
+        "build"
+      ],
+      "command": "docker build -f packages/server/Dockerfile . -t server"
     }
   },
   "tags": []
