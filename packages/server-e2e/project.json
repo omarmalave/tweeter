@@ -7,6 +7,12 @@
   "sourceRoot": "packages/server-e2e/src",
   "targets": {
     "e2e": {
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "server"
+        }
+      ],
       "executor": "@nx/jest:jest",
       "outputs": [
         "{workspaceRoot}/coverage/{e2eProjectRoot}"

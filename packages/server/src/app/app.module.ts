@@ -9,7 +9,7 @@ import { APP_FILTER } from '@nestjs/core';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: join(process.cwd(), 'schema.gql'),
     }),
     CoreModule,
     UsersModule

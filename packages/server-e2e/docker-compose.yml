@@ -9,15 +9,21 @@ services:
       - "4000:4000"
     depends_on:
       - db
+    environment:
+      DATABASE_URL: postgres://tweeter:tweeter@db:5432/tweeter
 
   db:
-    image: postgres
+    image: postgres:15-alpine
     restart: always
     environment:
       POSTGRES_USER: tweeter
       POSTGRES_PASSWORD: tweeter
       POSTGRES_DB: tweeter
     volumes:
-      - /var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
     ports:
-      - "5433:5433"
+      - "5433:5432" # exposes 5433 for localhost, 5432 for other containers
+      
+volumes:
+  db:
+    driver: local

@@ -10,7 +10,6 @@ module.exports = async function () {
   try {
     // Run Docker Compose down
     await exec('docker compose -f packages/server-e2e/docker-compose.yml down');
-
   } catch (error) {
     console.log('Error during global setup: ', error);
     process.exit(1);

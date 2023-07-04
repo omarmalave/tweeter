@@ -5,8 +5,7 @@
   "scripts": {},
   "private": true,
   "prisma": {
-    "schema": "tools/prisma/schema.prisma",
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} tools/prisma/seed.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~16.1.0",
@@ -28,7 +27,6 @@
     "@nx/js": "16.4.2",
     "@nx/linter": "16.4.2",
     "@nx/nest": "16.4.2",
-    "@nx/node": "^16.4.2",
     "@nx/web": "16.4.2",
     "@nx/webpack": "16.4.2",
     "@nx/workspace": "16.4.1",
